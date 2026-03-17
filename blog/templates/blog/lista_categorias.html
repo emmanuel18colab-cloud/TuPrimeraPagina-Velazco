@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Categorías{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h1>Categorías</h1>
+</div>
+
+<div style="margin-bottom:24px;">
+    <a href="{% url 'crear_categoria' %}" class="btn btn-primary">+ Nueva Categoría</a>
+</div>
+
+{% if categorias %}
+<div class="card-grid">
+    {% for categoria in categorias %}
+    <div class="card">
+        <div style="font-size:2rem;margin-bottom:12px;">🏷️</div>
+        <h3>{{ categoria.nombre }}</h3>
+        {% if categoria.descripcion %}
+        <p>{{ categoria.descripcion|truncatewords:20 }}</p>
+        {% endif %}
+        <div style="margin-top:14px;font-family:Arial,sans-serif;font-size:0.78rem;color:#4a4a6a;">
+            {{ categoria.posts.count }} post{{ categoria.posts.count|pluralize:"s" }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <span class="icon">🏷️</span>
+    <p>No hay categorías todavía. <a href="{% url 'crear_categoria' %}">¡Creá la primera!</a></p>
+</div>
+{% endif %}
+{% endblock %}

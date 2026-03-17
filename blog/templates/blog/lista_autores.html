@@ -1,0 +1,38 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Autores{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h1>Autores</h1>
+</div>
+
+<div style="margin-bottom:24px;">
+    <a href="{% url 'crear_autor' %}" class="btn btn-primary">+ Nuevo Autor</a>
+</div>
+
+{% if autores %}
+<div class="card-grid">
+    {% for autor in autores %}
+    <div class="card">
+        <div style="font-size:2rem;margin-bottom:12px;">👤</div>
+        <h3>{{ autor }}</h3>
+        <p style="font-family:Arial,sans-serif;font-size:0.85rem;margin:4px 0 8px;">
+            <a href="mailto:{{ autor.email }}">{{ autor.email }}</a>
+        </p>
+        {% if autor.bio %}
+        <p>{{ autor.bio|truncatewords:15 }}</p>
+        {% endif %}
+        <div style="margin-top:14px;font-family:Arial,sans-serif;font-size:0.78rem;color:#4a4a6a;">
+            {{ autor.posts.count }} post{{ autor.posts.count|pluralize:"s" }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <span class="icon">👤</span>
+    <p>No hay autores todavía. <a href="{% url 'crear_autor' %}">¡Registrá el primero!</a></p>
+</div>
+{% endif %}
+{% endblock %}

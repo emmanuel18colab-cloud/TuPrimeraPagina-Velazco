@@ -1,0 +1,40 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Nuevo Post{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h1>Nuevo Post</h1>
+    <p style="color:#4a4a6a;margin-top:6px;">Completá los campos para publicar un artículo.</p>
+</div>
+
+<div class="form-container">
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-group">
+            {% if field.field.widget.input_type == 'checkbox' %}
+            <div class="form-check">
+                {{ field }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            </div>
+            {% else %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% endif %}
+            {% if field.errors %}
+            <div style="color:#c0392b;font-family:Arial,sans-serif;font-size:0.82rem;margin-top:4px;">
+                {% for error in field.errors %}{{ error }}{% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Publicar Post</button>
+            <a href="{% url 'lista_posts' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

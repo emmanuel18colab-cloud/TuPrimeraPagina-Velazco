@@ -1,0 +1,66 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Buscar Posts{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h1>🔍 Buscar Posts</h1>
+    <p style="color:#4a4a6a;margin-top:6px;">Buscá por título, contenido o filtrá por categoría.</p>
+</div>
+
+<div style="background:#fff;border:1px solid #ddd8cc;border-radius:4px;padding:28px;margin-bottom:32px;">
+    <form method="get" novalidate>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+            <div class="form-group" style="flex:1;min-width:220px;margin-bottom:0;">
+                <label for="{{ form.consulta.id_for_label }}">{{ form.consulta.label }}</label>
+                {{ form.consulta }}
+            </div>
+            <div class="form-group" style="flex:1;min-width:220px;margin-bottom:0;">
+                <label for="{{ form.categoria.id_for_label }}">{{ form.categoria.label }}</label>
+                {{ form.categoria }}
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% if busqueda_realizada %}
+    {% if resultados %}
+    <div class="page-header" style="margin-bottom:20px;">
+        <h2 style="font-size:1.2rem;font-weight:normal;">
+            Se encontraron <strong>{{ resultados|length }}</strong> resultado{{ resultados|length|pluralize:"s" }}
+        </h2>
+    </div>
+    <div class="card-grid">
+        {% for post in resultados %}
+        <div class="card">
+            <div style="font-family:Arial,sans-serif;font-size:0.78rem;color:#4a4a6a;margin-bottom:8px;">
+                {{ post.fecha_publicacion|date:"d/m/Y" }}
+                {% if post.categoria %}
+                &nbsp;·&nbsp; <span class="badge">{{ post.categoria }}</span>
+                {% endif %}
+            </div>
+            <h3><a href="{% url 'detalle_post' post.pk %}">{{ post.titulo }}</a></h3>
+            {% if post.resumen %}
+            <p>{{ post.resumen }}</p>
+            {% else %}
+            <p>{{ post.contenido|truncatewords:20 }}</p>
+            {% endif %}
+            <div style="margin-top:16px;display:flex;align-items:center;justify-content:space-between;">
+                <small style="color:#4a4a6a;font-family:Arial,sans-serif;font-size:0.8rem;">por <strong>{{ post.autor }}</strong></small>
+                <a href="{% url 'detalle_post' post.pk %}" class="btn btn-secondary" style="padding:5px 14px;font-size:0.78rem;">Leer →</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <span class="icon">🔍</span>
+        <p>No se encontraron posts para tu búsqueda.</p>
+        <a href="{% url 'buscar' %}" class="btn btn-secondary" style="margin-top:12px;">Limpiar búsqueda</a>
+    </div>
+    {% endif %}
+{% endif %}
+{% endblock %}

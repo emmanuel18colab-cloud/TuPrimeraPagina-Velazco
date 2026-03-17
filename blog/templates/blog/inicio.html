@@ -1,0 +1,43 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Inicio{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h1>Bienvenido a BlogApp</h1>
+    <p style="color:#4a4a6a;margin-top:6px;">Los últimos artículos publicados</p>
+</div>
+
+<div style="margin-bottom:24px;">
+    <a href="{% url 'crear_post' %}" class="btn btn-primary">+ Nuevo Post</a>
+</div>
+
+{% if posts %}
+<div class="card-grid">
+    {% for post in posts %}
+    <div class="card">
+        <div style="font-family:Arial,sans-serif;font-size:0.78rem;color:#4a4a6a;margin-bottom:8px;">
+            {{ post.fecha_publicacion|date:"d/m/Y" }}
+            {% if post.categoria %}
+            &nbsp;·&nbsp; <span class="badge">{{ post.categoria }}</span>
+            {% endif %}
+        </div>
+        <h3><a href="{% url 'detalle_post' post.pk %}">{{ post.titulo }}</a></h3>
+        {% if post.resumen %}
+        <p>{{ post.resumen }}</p>
+        {% else %}
+        <p>{{ post.contenido|truncatewords:20 }}</p>
+        {% endif %}
+        <div style="margin-top:16px;">
+            <small style="color:#4a4a6a;font-family:Arial,sans-serif;font-size:0.8rem;">por <strong>{{ post.autor }}</strong></small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <span class="icon">📝</span>
+    <p>No hay posts todavía. <a href="{% url 'crear_post' %}">¡Crea el primero!</a></p>
+</div>
+{% endif %}
+{% endblock %}

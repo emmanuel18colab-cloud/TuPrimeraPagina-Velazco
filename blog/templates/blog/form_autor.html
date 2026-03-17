@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+
+{% block titulo %}Nuevo Autor{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h1>Nuevo Autor</h1>
+    <p style="color:#4a4a6a;margin-top:6px;">Registrá un nuevo autor del blog.</p>
+</div>
+
+<div class="form-container">
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <div style="color:#c0392b;font-family:Arial,sans-serif;font-size:0.82rem;margin-top:4px;">
+                {% for error in field.errors %}{{ error }}{% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Registrar Autor</button>
+            <a href="{% url 'lista_autores' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
