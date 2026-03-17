@@ -1,5 +1,5 @@
 """
-WSGI config for TuPrimeraPaginaApellido project.
+WSGI config for TuPrimeraPaginaVelazco project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TuPrimeraPaginaApellido.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TuPrimeraPaginaVelazco.settings')
 
 application = get_wsgi_application()
